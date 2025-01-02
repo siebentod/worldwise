@@ -1,0 +1,52 @@
+@import url('fonts.css');
+@import url('normalize.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-size: 1.0625rem;
+  background-color: hsl(120, 50%, 80%);
+}
+
+main,
+article.container {
+  background-color: white;
+}
+
+article.container {
+  max-width: 768px;
+  margin-inline: auto;
+}
+
+hr {
+  margin: 25px 10px;
+}
+
+.prose {
+  p {
+    @apply mb-1;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply mt-3;
+    @apply font-bold;
+    @apply text-xl;
+    @apply text-center;
+    font-family: 'Spectral', Georgia, 'Times New Roman', Times, serif;
+    color: rgb(45, 45, 45);
+  }
+
+  li {
+    list-style: disc;
+    margin-left: 25px;
+  }
+  ul {
+    @apply mb-3;
+  }
+}
