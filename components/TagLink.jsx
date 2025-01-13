@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { spaceToHyphen } from '@/lib/space-and-hyphen';
 
 function TagLink({
   tag,
@@ -14,12 +15,12 @@ function TagLink({
 
   const hidden =
     filteredArticles &&
-    filteredArticles.filter((article) => article.tags.includes(tag)).length ===
-      0;
+    filteredArticles.filter((article) => article.tags.includes(tag)).length < 2;
+  // filteredArticles.filter((article) => article.tags.includes(tag)).length === 0;
 
   const handleTagClick = () => {
     if (selectedTags.includes(tag)) return;
-    const updatedTags = [...selectedTags, tag];
+    const updatedTags = [...selectedTags, spaceToHyphen(tag)];
     const newTags = updatedTags.join(' ');
 
     const params = new URLSearchParams(searchParams.toString());
@@ -28,18 +29,20 @@ function TagLink({
   };
 
   return (
-    <button
-      key={tag}
-      onClick={handleTagClick}
-      className="bg-gray-200 px-2 py-1 rounded transition-all hover:bg-gray-300 items-center"
-      style={{
-        fontSize: `${tagSize || 1}rem`,
-        display: hidden ? 'none' : 'inherit',
-      }}
-    >
-      {tag}
-      {count !== undefined && ` (${count})`}
-    </button>
+    count > 1 && (
+      <button
+        key={tag}
+        onClick={handleTagClick}
+        className="bg-gray-200 px-2 py-1 rounded transition-all hover:bg-gray-300 items-center"
+        style={{
+          fontSize: `${tagSize || 1}rem`,
+          display: hidden ? 'none' : 'inherit',
+        }}
+      >
+        {tag}
+        {count !== undefined && filteredArticles && ` (${count})`}
+      </button>
+    )
   );
 }
 

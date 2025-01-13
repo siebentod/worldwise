@@ -1,50 +1,65 @@
 import fs from 'fs/promises';
 import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
 import { regexH } from './lib/regex-h.js';
 import { regexNoH } from './lib/regex-no-h.js';
 import { generateId } from './lib/generate-id.js';
-import { fileURLToPath } from 'url';
+import { getTitle } from './lib/get-title.js';
+import { getCurrentDate } from './lib/get-current-date.js';
 
-const TITLE = 'On Alain Badiou Philosophy';
-const TAGS = ['Ницше'];
+import { generateTags } from './lib/tags/ai-generate-tags.js';
+
+// PREFERENCES
+
 const THEME = 'phi'; //phi, psy, rel
-const USE_REGEX_H = false; // h or no-h
+const processContent = regexNoH; // regexH / regexNoH
+const MODEL = 'sber'; // sber, vsegpt
 
-// Абсолютные пути для файлов
-const ID = generateId(TITLE);
+// PREFERENCES
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const inputFilePath = path.join(__dirname, 'input.txt');
-const outputFilePath = path.join(__dirname, `${ID}.json`);
 
-// Генерация текущей даты в формате "YYYY-MM-DD"
-function getCurrentDate() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-// Чтение содержимого input.txt
 try {
-  const inputContent = await fs.readFile(inputFilePath, 'utf-8');
+  const content1Initial = await fs.readFile(inputFilePath, 'utf-8');
 
-  // Выбор функции обработки
-  const processedContent = USE_REGEX_H
-    ? regexH(inputContent)
-    : regexNoH(inputContent);
+  const [content2WithoutTitle, TITLE] = getTitle(content1Initial);
 
-  // Создание JSON-объекта
+  const ID = generateId(TITLE);
+
+  const outputFilePath = path.join(__dirname, `json/${ID}.json`);
+
+  const fileExists = await fs
+    .access(outputFilePath)
+    .then(() => true)
+    .catch(() => false);
+
+  if (fileExists) {
+    throw new Error('JSON файл уже существует.');
+  }
+
+  const TAGS = await generateTags({
+    TITLE,
+    TEXT: content2WithoutTitle,
+    MODEL,
+  });
+
+  if (!TAGS) {
+    throw new Error('Ошибка при генерации тегов.');
+  }
+
+  const content3Processed = processContent(content2WithoutTitle);
+
   const jsonData = {
     title: TITLE,
     date: getCurrentDate(),
-    content: processedContent,
+    content: content3Processed,
     tags: TAGS,
     theme: THEME,
     id: ID,
   };
 
-  // Запись JSON в файл
   await fs.writeFile(
     outputFilePath,
     JSON.stringify(jsonData, null, 2),

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { hyphenToSpace } from '@/lib/space-and-hyphen';
 
 export default function Search({ searchQuery, selectedTags }) {
   const router = useRouter();

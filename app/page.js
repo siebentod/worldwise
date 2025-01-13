@@ -2,6 +2,7 @@ import { getAllArticles, getTagsWithCount } from '@/lib/articles';
 import ArticleList from '@/components/ArticleList';
 import Search from '@/components/Search';
 import TagCloud from '@/components/TagCloud';
+import { hyphenToSpace } from '@/lib/space-and-hyphen';
 
 export async function generateStaticParams() {
   const articles = await getAllArticles();
@@ -12,7 +13,9 @@ export default async function Home({ searchParams: searchParamsPromise }) {
   const articles = await getAllArticles();
   const tags = await getTagsWithCount();
   const searchParams = await searchParamsPromise;
-  const selectedTags = searchParams.tags ? searchParams.tags.split(' ') : [];
+  const selectedTags = searchParams.tags
+    ? searchParams.tags.split(' ').map(hyphenToSpace)
+    : [];
   const searchQuery = searchParams.search || '';
 
   const filteredArticles = articles.filter((article) => {
@@ -35,6 +38,8 @@ export default async function Home({ searchParams: searchParamsPromise }) {
           selectedTags={selectedTags}
           filteredArticles={filteredArticles}
           searchQuery={searchQuery}
+          tags={tags}
+          loadCount={12}
         />
       </main>
       <aside className="md:w-1/4">
