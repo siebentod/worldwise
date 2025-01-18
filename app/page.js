@@ -36,7 +36,7 @@ export default async function Home({ searchParams: searchParamsPromise }) {
           <h1 className="text-3xl font-bold cursor-pointer select-none text-center sm:text-start">
             WorldWise
           </h1>
-          <h2 className="ml-2.5 text-xl font-semibold cursor-default select-none hidden sm:inline">
+          <h2 className="ml-2.5 text-xl cursor-default select-none hidden sm:inline">
             Тексты о религии, философии и психологии
           </h2>
         </div>
