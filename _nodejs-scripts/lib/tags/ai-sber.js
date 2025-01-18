@@ -12,16 +12,15 @@ const filePath = path.join(__dirname, 'sbertoken.txt');
 
 export async function sber(prompt) {
   const payload = {
-    model: 'GigaChat',
+    model: 'GigaChat-Pro',
     messages: [
       {
-        role: 'user',
+        role: 'system',
         content: prompt,
       },
     ],
-    n: 1,
+    temperature: 0.1,
     stream: false,
-    max_tokens: 512,
     repetition_penalty: 1,
     update_interval: 0,
   };
@@ -37,7 +36,9 @@ export async function sber(prompt) {
     result = await doRequest(accessToken);
   }
 
-  if (result) return result.choices[0].message.content;
+  if (result) {
+    return result.choices[0].message.content;
+  } else console.log(result);
 
   async function doRequest(accessToken) {
     const url = 'https://gigachat.devices.sberbank.ru/api/v1/chat/completions';

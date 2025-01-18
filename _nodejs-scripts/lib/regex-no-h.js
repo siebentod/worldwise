@@ -18,7 +18,7 @@ export function regexNoH(text) {
 
   // Оборачивание абзацев в <p> (кроме строк с уже существующими тегами)
   text = text.replace(
-    /^(?!<h[2-3]>|<strong>|<em>|<ul>|<li>|<\/li>)(.+?)$/gm,
+    /^(?!<h[2-3]>|<em>|<ul>|<li>|<\/li>)(.+?)$/gm,
     '<p>$1</p>'
   );
 

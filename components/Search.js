@@ -27,7 +27,7 @@ export default function Search({ searchQuery, selectedTags }) {
   };
 
   const clearSearch = () => {
-    setSearchTerm(''); // Сбрасываем значение поиска
+    searchHandle(''); // Сбрасываем значение поиска
   };
 
   const removeTag = (tag) => {
@@ -52,28 +52,31 @@ export default function Search({ searchQuery, selectedTags }) {
           type="text"
           value={searchTerm}
           onChange={(e) => searchHandle(e.target.value)}
-          placeholder="Search articles..."
+          placeholder="Поиск по статьям..."
           className="w-full p-2 border border-gray-300 rounded"
         />
-        {/* <button
-          className="float-right text-red-500 hover:text-red-700 text-2xl"
-          onClick={clearSearch}
-        >
-          ×
-        </button> */}
-        <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex gap-2 items-center ">
-          {selectedTags.map((tag) => (
-            <span
-              onClick={() => removeTag(tag)}
-              key={tag}
-              className="group flex items-center  pl-2 pr-1.5 py-1 rounded transition-all bg-gray-200 hover:bg-gray-300 h-max cursor-pointer"
-            >
-              {tag}
-              <span className="group-hover:text-black ml-1 float-right text-gray-500">
-                ×
-              </span>
-            </span>
-          ))}
+        <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex gap-2 items-center max-w-[calc(100%-15rem)] overflow-x-hidden">
+          {selectedTags.length
+            ? selectedTags.map((tag) => (
+                <span
+                  onClick={() => removeTag(tag)}
+                  key={tag}
+                  className="group flex items-center  pl-2 pr-1.5 py-1 rounded transition-all bg-gray-200 hover:bg-gray-300 h-max cursor-pointer"
+                >
+                  {tag}
+                  <span className="group-hover:text-black ml-1 float-right text-gray-500">
+                    ×
+                  </span>
+                </span>
+              ))
+            : searchTerm && (
+                <button
+                  className="float-right text-gray-500 hover:text-black text-2xl"
+                  onClick={clearSearch}
+                >
+                  ×
+                </button>
+              )}
         </div>
       </div>
       {/* <button

@@ -1,3 +1,6 @@
+import path from 'path';
+import fs from 'fs/promises';
+
 import {
   getArticleBySlug,
   getAllArticles,
@@ -18,8 +21,26 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({ params }) {
+  const { slug } = params;
+
+  const filePath = path.join(process.cwd(), 'articles', `${slug}.json`);
+  try {
+    const fileContent = await fs.readFile(filePath, 'utf-8');
+    const data = JSON.parse(fileContent);
+
+    return {
+      title: `${data.title} | WorldWise`,
+      description: 'Тексты о философии',
+    };
+  } catch (err) {
+    console.error(`Ошибка чтения файла ${filePath}:`, err.message);
+    return { title: 'Страница не найдена', description: '' };
+  }
+}
+
 export default async function ArticlePage({ params }) {
-  const article = await getArticleBySlug(params.slug);
+  const article = await getArticleBySlug((await params).slug);
   const tags = await getTagsWithCount();
   const articles = await getAllArticles();
 
@@ -31,13 +52,14 @@ export default async function ArticlePage({ params }) {
         className="prose max-w-none"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
-      <div className="mt-4 flex justify-between items-start">
+      <Author />
+      <div className="mt-2 flex justify-between items-start">
         <div>
           <h2 className="text-xl font-bold mb-2">Теги:</h2>
           <div className="flex flex-wrap gap-2">
             {article.tags.map(
               (tag) => (
-                // tags[tag] > 1 && ( !!!!!!!!!!!!!!!!!!!!!!
+                // tags[tag] > 1 && (
                 <Link
                   key={tag}
                   href={`/?tags=${spaceToHyphen(tag)}`}
@@ -46,11 +68,10 @@ export default async function ArticlePage({ params }) {
                   {tag}
                 </Link>
               )
-              // ) !!!!!!!!!!!!!!!!!!!!!!!
+              // )
             )}
           </div>
         </div>
-        <Author />
       </div>
       <div className="mt-8">
         <h2 className="text-xl font-bold mb-4">
@@ -60,7 +81,7 @@ export default async function ArticlePage({ params }) {
             href={`/theme/${article.theme}`}
             className="bg-gray-200 px-2 py-1 rounded font-semibold transition-all hover:bg-gray-300"
           >
-            {article.theme}
+            {article.theme === 'phi' ? 'Философия' : article.theme}
           </Link>
         </h2>
         <Suspense fallback={<div>Loading...</div>}>
@@ -71,11 +92,6 @@ export default async function ArticlePage({ params }) {
           />
         </Suspense>
       </div>
-      {/* <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Теги</h2>
-          <TagCloud tags={tags} />
-        </div> */}
-      {/* </div> */}
     </article>
   );
 }

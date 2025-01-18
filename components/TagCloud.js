@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import TagLink from './TagLink';
+import Spinner from './Spinner';
 
 export default function TagCloud({
   tags: tagsCommon,
@@ -27,8 +28,11 @@ export default function TagCloud({
     }
     setTagSizes(sizes);
   }, [tags]);
+  console.log(Object.keys(tagSizes));
 
-  return (
+  return Object.keys(tagSizes).length === 0 ? (
+    <Spinner />
+  ) : (
     <div className="flex flex-wrap gap-2 justify-center">
       {Object.entries(tags).map(([tag, count]) => (
         <TagLink

@@ -13,6 +13,14 @@ function TagLink({
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const tagCount = {};
+  if (filteredArticles)
+    filteredArticles.forEach((article) => {
+      article.tags.forEach((tag) => {
+        tagCount[tag] = (tagCount[tag] || 0) + 1;
+      });
+    });
+
   const hidden =
     filteredArticles &&
     filteredArticles.filter((article) => article.tags.includes(tag)).length < 2;
@@ -40,7 +48,8 @@ function TagLink({
         }}
       >
         {tag}
-        {count !== undefined && filteredArticles && ` (${count})`}
+        {/* {count !== undefined && filteredArticles && ` (${count})`} */}
+        {tagCount[tag] && ` (${tagCount[tag]})`}
       </button>
     )
   );

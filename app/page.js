@@ -30,21 +30,32 @@ export default async function Home({ searchParams: searchParamsPromise }) {
   });
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-row">
       <main className="container mx-auto p-4 min-h-screen">
-        <h1 className="text-3xl font-bold mb-4">WorldWise</h1>
+        <div className="flex items-center mb-4">
+          <h1 className="text-3xl font-bold cursor-pointer select-none text-center sm:text-start">
+            WorldWise
+          </h1>
+          <h2 className="ml-2.5 text-xl font-semibold cursor-default select-none hidden sm:inline">
+            Тексты о религии, философии и психологии
+          </h2>
+        </div>
         <Search searchQuery={searchQuery} selectedTags={selectedTags} />
-        <ArticleList
-          selectedTags={selectedTags}
-          filteredArticles={filteredArticles}
-          searchQuery={searchQuery}
-          tags={tags}
-          loadCount={12}
-        />
+        {filteredArticles.length > 0 ? (
+          <ArticleList
+            selectedTags={selectedTags}
+            filteredArticles={filteredArticles}
+            searchQuery={searchQuery}
+            tags={tags}
+            loadCount={12}
+          />
+        ) : (
+          'Совпадения не найдены :('
+        )}
       </main>
-      <aside className="md:w-1/4">
-        <div className="sticky top-4">
-          <h2 className="text-xl font-semibold mb-4 text-center">Теги</h2>
+      <aside className="hidden md:w-1/4 md:flex justify-center mx-2">
+        <div className="fixed top-4 bottom-1 max-h-[100%] overflow-y-auto">
+          <h2 className="text-xl font-semibold mb-2 text-center">Теги</h2>
           <TagCloud
             tags={tags}
             searchQuery={searchQuery}

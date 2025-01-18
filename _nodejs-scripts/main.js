@@ -14,7 +14,7 @@ import { generateTags } from './lib/tags/ai-generate-tags.js';
 
 const THEME = 'phi'; //phi, psy, rel
 const processContent = regexNoH; // regexH / regexNoH
-const MODEL = 'sber'; // sber, vsegpt
+const MODEL = 'chatgpt'; // sber, vsegpt, chatgpt
 
 // PREFERENCES
 
@@ -39,14 +39,15 @@ try {
     throw new Error('JSON файл уже существует.');
   }
 
-  const TAGS = await generateTags({
+  let TAGS = await generateTags({
     TITLE,
     TEXT: content2WithoutTitle,
     MODEL,
   });
 
   if (!TAGS) {
-    throw new Error('Ошибка при генерации тегов.');
+    console.log('Ошибка при генерации тегов.');
+    TAGS = [];
   }
 
   const content3Processed = processContent(content2WithoutTitle);

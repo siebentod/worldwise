@@ -2,13 +2,13 @@
 // !!!
 
 import Link from 'next/link';
-import Author from './Author';
-import Image from 'next/image';
 import TagLink from './TagLink';
 import parse from 'html-react-parser';
 import { useInView } from 'react-intersection-observer';
 import { searchExcerpt, defaultExcerpt } from '@/lib/excerpt-fns';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function ArticleList({
   filteredArticles: articles,
@@ -16,6 +16,7 @@ export default function ArticleList({
   searchQuery,
   tags,
   loadCount: articlesCount,
+  articlesInArticle = false,
 }) {
   const [visibleCards, setVisibleCards] = useState([]);
   const [loadCount, setLoadCount] = useState(articlesCount);
@@ -40,38 +41,57 @@ export default function ArticleList({
     }
   }, [articles, inView, loadCount]);
 
+  const ArticleSkeleton = () => (
+    <div key={1} className="border p-4 pr-3 rounded">
+      <h2 className="text-xl font-semibold mb-2 leading-6">
+        <Skeleton height={80} />
+      </h2>
+      <p className="text-gray-600 mb-2">
+        <Skeleton height={30} />
+      </p>
+      <p className="mb-2">
+        <Skeleton height={300} />
+      </p>
+    </div>
+  );
+
   return (
-    <div className="grid gap-4 md:grid-cols-3 xlg:grid-cols-4">
-      {visibleCards.map((article) => (
-        <div key={article.slug} className="border p-4 pr-3 rounded">
-          <h2 className="text-xl font-semibold mb-2 leading-6">
-            <Link href={`/articles/${article.slug}`}>{article.title}</Link>
-          </h2>
-          <p className="text-gray-600 mb-2">{article.date}</p>
-          <p className="mb-2">{parse(excerpt(article))}</p>
-          <div className="flex justify-between items-center">
-            <div className="flex flex-wrap gap-2">
-              {article.tags.map((tag) => (
-                <TagLink
-                  tag={tag}
-                  key={tag}
-                  selectedTags={selectedTags}
-                  count={tags[tag]}
-                />
-              ))}
+    <div
+      className={`grid gap-4 ${
+        articlesInArticle
+          ? 'md:grid-cols-2 xlg:grid-cols-2'
+          : 'sm:grid-cols-2 900px:grid-cols-3 xlg:grid-cols-4'
+      }`}
+    >
+      {visibleCards.length > 0 ? (
+        visibleCards.map((article) => (
+          <div key={article.slug} className="border p-4 pr-3 rounded">
+            <h2 className="text-xl font-semibold mb-2 leading-6">
+              <Link href={`/articles/${article.slug}`}>{article.title}</Link>
+            </h2>
+            <p className="text-gray-600 mb-2">{article.date}</p>
+            <p className="mb-2">{parse(excerpt(article))}</p>
+            <div className="flex justify-between items-center">
+              <div className="flex flex-wrap gap-2">
+                {article.tags.slice(0, 4).map((tag) => (
+                  <TagLink
+                    tag={tag}
+                    key={tag}
+                    selectedTags={selectedTags}
+                    count={tags[tag]}
+                  />
+                ))}
+              </div>
             </div>
-            {/* <div className="flex items-center justify-end text-end">
-              <Image
-                src="/avatar.png"
-                alt={`Avatar of Νοῦς Τεχνητός`}
-                width={20}
-                height={20}
-                className="rounded-full"
-              />
-            </div> */}
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <>
+          <ArticleSkeleton />
+          <ArticleSkeleton />
+          <ArticleSkeleton />
+        </>
+      )}
       {/* Невидимый триггер для подгрузки */}
       {loadCount < articles.length && (
         <div ref={ref} style={{ height: '20px' }} />
