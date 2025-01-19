@@ -42,6 +42,7 @@ export default function TagCloud({
           selectedTags={selectedTags}
           key={tag}
           filteredArticles={filteredArticles}
+          color="bg-gray-100 hover:bg-gray-200"
         />
       ))}
     </div>

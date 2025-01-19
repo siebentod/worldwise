@@ -3,6 +3,7 @@ import ArticleList from '@/components/ArticleList';
 import Search from '@/components/Search';
 import TagCloud from '@/components/TagCloud';
 import { hyphenToSpace } from '@/lib/space-and-hyphen';
+import './home.css';
 
 export async function generateStaticParams() {
   const articles = await getAllArticles();
@@ -30,13 +31,13 @@ export default async function Home({ searchParams: searchParamsPromise }) {
   });
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row home">
       <main className="container mx-auto p-4 min-h-screen">
         <div className="flex items-center mb-4">
           <h1 className="text-3xl font-bold cursor-pointer select-none text-center sm:text-start">
             WorldWise
           </h1>
-          <h2 className="ml-3 mt-1 text-xl cursor-default select-none hidden sm:inline">
+          <h2 className="ml-3 mt-1.5 text-xl cursor-default select-none hidden sm:inline">
             Тексты о религии, философии и психологии
           </h2>
         </div>

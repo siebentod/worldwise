@@ -9,6 +9,7 @@ function TagLink({
   tagSize = null,
   selectedTags = [],
   filteredArticles,
+  color = '',
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,7 +42,7 @@ function TagLink({
       <button
         key={tag}
         onClick={handleTagClick}
-        className="bg-gray-200 px-2 py-1 rounded transition-all hover:bg-gray-300 items-center"
+        className={`bg-gray-200 px-2 py-1 rounded transition-all hover:bg-gray-300 items-center ${color}`}
         style={{
           fontSize: `${tagSize || 1}rem`,
           display: hidden ? 'none' : 'inherit',

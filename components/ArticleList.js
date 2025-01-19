@@ -42,7 +42,7 @@ export default function ArticleList({
   }, [articles, inView, loadCount]);
 
   const ArticleSkeleton = () => (
-    <div key={1} className="border p-4 pr-3 rounded">
+    <div key={1} className="border p-4 pr-3 rounded bg-white">
       <h2 className="text-xl font-semibold mb-2 leading-6">
         <Skeleton height={80} />
       </h2>
@@ -65,7 +65,7 @@ export default function ArticleList({
     >
       {visibleCards.length > 0 ? (
         visibleCards.map((article) => (
-          <div key={article.slug} className="border p-4 pr-3 rounded">
+          <div key={article.slug} className="border p-4 pr-3 rounded bg-white">
             <h2 className="text-xl font-semibold mb-2 leading-[1.375rem]">
               <Link href={`/articles/${article.slug}`}>{article.title}</Link>
             </h2>
@@ -87,6 +87,7 @@ export default function ArticleList({
         ))
       ) : (
         <>
+          <ArticleSkeleton />
           <ArticleSkeleton />
           <ArticleSkeleton />
           <ArticleSkeleton />
