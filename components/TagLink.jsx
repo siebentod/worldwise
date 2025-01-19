@@ -30,7 +30,9 @@ function TagLink({
   const handleTagClick = () => {
     if (selectedTags.includes(tag)) return;
     const updatedTags = [...selectedTags, spaceToHyphen(tag)];
-    const newTags = updatedTags.join(' ');
+    console.log(selectedTags);
+    const tagsToUrl = updatedTags.map(spaceToHyphen);
+    const newTags = tagsToUrl.join(' ');
 
     const params = new URLSearchParams(searchParams.toString());
     params.set('tags', newTags);

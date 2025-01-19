@@ -4,6 +4,7 @@ import Search from '@/components/Search';
 import TagCloud from '@/components/TagCloud';
 import { hyphenToSpace } from '@/lib/space-and-hyphen';
 import './home.css';
+import { convert } from 'html-to-text';
 
 export async function generateStaticParams() {
   const articles = await getAllArticles();
@@ -25,7 +26,9 @@ export default async function Home({ searchParams: searchParamsPromise }) {
       selectedTags.every((tag) => article.tags.includes(tag));
     const matchesSearch =
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.content.toLowerCase().includes(searchQuery.toLowerCase());
+      convert(article.content)
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
 
     return matchesTags && matchesSearch;
   });
@@ -34,10 +37,13 @@ export default async function Home({ searchParams: searchParamsPromise }) {
     <div className="flex flex-row home">
       <main className="container mx-auto p-4 min-h-screen">
         <div className="flex items-center mb-4">
-          <h1 className="text-3xl font-bold cursor-pointer select-none text-center sm:text-start">
+          <a
+            className="text-3xl font-bold cursor-pointer select-none text-center sm:text-start"
+            href="/"
+          >
             WorldWise
-          </h1>
-          <h2 className="ml-3 mt-1.5 text-xl cursor-default select-none hidden sm:inline">
+          </a>
+          <h2 className="ml-3 mt-[5px] text-xl cursor-default select-none hidden sm:inline">
             Тексты о религии, философии и психологии
           </h2>
         </div>

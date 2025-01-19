@@ -28,7 +28,7 @@ export default function TagCloud({
     }
     setTagSizes(sizes);
   }, [tags]);
-  console.log(Object.keys(tagSizes));
+  // console.log(Object.keys(tagSizes));
 
   return Object.keys(tagSizes).length === 0 ? (
     <Spinner />

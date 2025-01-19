@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { hyphenToSpace } from '@/lib/space-and-hyphen';
+import { hyphenToSpace, spaceToHyphen } from '@/lib/space-and-hyphen';
 
 export default function Search({ searchQuery, selectedTags }) {
   const router = useRouter();
@@ -34,7 +34,8 @@ export default function Search({ searchQuery, selectedTags }) {
     const updatedTags = selectedTags.filter(
       (selectedTag) => selectedTag !== tag
     );
-    const newTags = updatedTags.join(' ');
+    const tagsToUrl = updatedTags.map(spaceToHyphen);
+    const newTags = tagsToUrl.join(' ');
 
     const params = new URLSearchParams(searchParams.toString());
     if (newTags) {
@@ -61,7 +62,7 @@ export default function Search({ searchQuery, selectedTags }) {
                 <span
                   onClick={() => removeTag(tag)}
                   key={tag}
-                  className="group flex items-center  pl-2 pr-1.5 py-1 rounded transition-all bg-gray-200 hover:bg-gray-300 h-max cursor-pointer"
+                  className="group flex items-center  pl-2 pr-1.5 py-1 rounded transition-all bg-gray-200 hover:bg-gray-300 h-max cursor-pointer text-nowrap"
                 >
                   {tag}
                   <span className="group-hover:text-black ml-1 float-right text-gray-500">

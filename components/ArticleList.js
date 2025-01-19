@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import TagLink from './TagLink';
 import parse from 'html-react-parser';
+import { convert } from 'html-to-text';
 import { useInView } from 'react-intersection-observer';
 import { searchExcerpt, defaultExcerpt } from '@/lib/excerpt-fns';
 import { useEffect, useState } from 'react';
@@ -22,11 +23,12 @@ export default function ArticleList({
   const [loadCount, setLoadCount] = useState(articlesCount);
   const { ref, inView } = useInView();
 
-  const excerpt = (article) =>
-    searchQuery &&
-    article.content.toLowerCase().includes(searchQuery.toLowerCase())
-      ? searchExcerpt(article.content, searchQuery) // Показываем текст вокруг строки
+  const excerpt = (article) => {
+    return searchQuery
+      ? // &&   convert(article.content).toLowerCase().includes(searchQuery.toLowerCase())
+        searchExcerpt(article.content, searchQuery)
       : defaultExcerpt(article.content);
+  };
 
   useEffect(() => {
     setVisibleCards(articles.slice(0, loadCount));
