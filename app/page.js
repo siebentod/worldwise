@@ -36,7 +36,7 @@ export default async function Home({ searchParams: searchParamsPromise }) {
           <h1 className="text-3xl font-bold cursor-pointer select-none text-center sm:text-start">
             WorldWise
           </h1>
-          <h2 className="ml-2.5 text-xl cursor-default select-none hidden sm:inline">
+          <h2 className="ml-3 mt-1 text-xl cursor-default select-none hidden sm:inline">
             Тексты о религии, философии и психологии
           </h2>
         </div>
@@ -55,7 +55,9 @@ export default async function Home({ searchParams: searchParamsPromise }) {
       </main>
       <aside className="hidden md:w-1/4 md:flex justify-center mx-2">
         <div className="fixed top-4 bottom-1 max-h-[100%] overflow-y-auto">
-          <h2 className="text-xl font-semibold mb-2 text-center">Теги</h2>
+          <h2 className="text-xl font-semibold mb-2 text-center font-[spectral]">
+            Теги
+          </h2>
           <TagCloud
             tags={tags}
             searchQuery={searchQuery}

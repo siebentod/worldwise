@@ -66,11 +66,11 @@ export default function ArticleList({
       {visibleCards.length > 0 ? (
         visibleCards.map((article) => (
           <div key={article.slug} className="border p-4 pr-3 rounded">
-            <h2 className="text-xl font-semibold mb-2 leading-6">
+            <h2 className="text-xl font-semibold mb-2 leading-[1.375rem]">
               <Link href={`/articles/${article.slug}`}>{article.title}</Link>
             </h2>
             <p className="text-gray-600 mb-2">{article.date}</p>
-            <p className="mb-2">{parse(excerpt(article))}</p>
+            <p className="mb-2 leading-[1.375rem]">{parse(excerpt(article))}</p>
             <div className="flex justify-between items-center">
               <div className="flex flex-wrap gap-2">
                 {article.tags.slice(0, 4).map((tag) => (
