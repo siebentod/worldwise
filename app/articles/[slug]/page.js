@@ -78,13 +78,13 @@ export default async function ArticlePage({ params }) {
         <div className="mt-8">
           <h2 className="text-xl font-bold mb-4">
             Больше по теме:{' '}
-            <Link
+            <a
               key={article.theme}
-              href={`/theme/${article.theme}`}
-              className="bg-gray-200 px-2 py-1 rounded font-semibold transition-all hover:bg-gray-300"
+              // href={`/theme/${article.theme}`}
+              className="bg-gray-200 px-2 py-1 rounded font-semibold transition-all hover:bg-gray-300 cursor-pointer"
             >
               {article.theme === 'phi' ? 'Философия' : article.theme}
-            </Link>
+            </a>
           </h2>
           <Suspense fallback={<div>Loading...</div>}>
             <ThemeArticles
