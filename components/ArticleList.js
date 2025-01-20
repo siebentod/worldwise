@@ -62,7 +62,7 @@ export default function ArticleList({
       className={`grid gap-4 ${
         articlesInArticle
           ? 'md:grid-cols-2 xlg:grid-cols-2'
-          : 'sm:grid-cols-2 900px:grid-cols-3 xlg:grid-cols-4'
+          : 'sm:grid-cols-2 900px:grid-cols-3 xlg:grid-cols-3'
       }`}
     >
       {visibleCards.length > 0 ? (
@@ -75,7 +75,7 @@ export default function ArticleList({
             <p className="mb-2 leading-[1.375rem]">{parse(excerpt(article))}</p>
             <div className="flex justify-between items-center">
               <div className="flex flex-wrap gap-2">
-                {article.tags.slice(0, 4).map((tag) => (
+                {article.tags.slice(0, 3).map((tag) => (
                   <TagLink
                     tag={tag}
                     key={tag}
