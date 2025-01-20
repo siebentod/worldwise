@@ -20,6 +20,7 @@ export default async function Home({ searchParams: searchParamsPromise }) {
       selectedTags.length === 0 ||
       selectedTags.every((tag) => article.tags.includes(tag));
     const matchesSearch =
+      searchQuery.length < 3 ||
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       convert(article.content)
         .toLowerCase()
@@ -56,8 +57,8 @@ export default async function Home({ searchParams: searchParamsPromise }) {
         )}
       </main>
       <aside className="hidden md:w-1/4 md:flex justify-center mx-2">
-        <div className="fixed top-4 bottom-1 max-h-[100%] overflow-y-auto">
-          <h2 className="text-xl font-semibold mb-2 text-center font-[spectral]">
+        <div className="fixed max-h-[100%] overflow-y-auto">
+          <h2 className="text-xl font-semibold mb-2 text-center font-[spectral] mt-4">
             Теги
           </h2>
           <TagCloud

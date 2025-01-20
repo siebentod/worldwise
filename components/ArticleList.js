@@ -24,7 +24,7 @@ export default function ArticleList({
   const { ref, inView } = useInView();
 
   const excerpt = (article) => {
-    return searchQuery
+    return searchQuery && searchQuery.length > 2
       ? // &&   convert(article.content).toLowerCase().includes(searchQuery.toLowerCase())
         searchExcerpt(article.content, searchQuery)
       : defaultExcerpt(article.content);

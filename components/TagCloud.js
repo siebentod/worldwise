@@ -33,7 +33,7 @@ export default function TagCloud({
   return Object.keys(tagSizes).length === 0 ? (
     <Spinner />
   ) : (
-    <div className="flex flex-wrap gap-2 justify-center">
+    <div className="flex flex-wrap gap-2 justify-center mb-1">
       {Object.entries(tags).map(([tag, count]) => (
         <TagLink
           tag={tag}
