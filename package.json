@@ -7,7 +7,7 @@
     "dev": "node lib/generate-indexes.js && next dev",
     "build": "node lib/generate-indexes.js && next build",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
-    "start": "next start",
+    "start": "node lib/generate-indexes.js && next start",
     "lint": "next lint"
   },
   "dependencies": {
