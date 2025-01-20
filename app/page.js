@@ -6,11 +6,6 @@ import { hyphenToSpace } from '@/lib/space-and-hyphen';
 import './home.css';
 import { convert } from 'html-to-text';
 
-export async function generateStaticParams() {
-  const articles = await getAllArticles();
-  return articles;
-}
-
 export default async function Home({ searchParams: searchParamsPromise }) {
   const articles = await getAllArticles();
   const tags = await getTagsWithCount();
