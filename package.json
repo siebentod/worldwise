@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node lib/generate-indexes.js && next dev",
     "build": "next build",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "start": "next start",

@@ -1,11 +1,7 @@
 import path from 'path';
 import fs from 'fs/promises';
 
-import {
-  getArticleBySlug,
-  getAllArticles,
-  getTagsWithCount,
-} from '@/lib/articles';
+import { getArticleBySlug } from '@/lib/articles';
 import Link from 'next/link';
 import Author from '@/components/Author';
 import TagCloud from '@/components/TagCloud';
@@ -15,8 +11,10 @@ import TagLink from '@/components/TagLink';
 import { spaceToHyphen } from '@/lib/space-and-hyphen';
 import './article.css';
 
+import articles from '@/lib/generated/articles.json';
+import tags from '@/lib/generated/tags-with-count.json';
+
 export async function generateStaticParams() {
-  const articles = await getAllArticles();
   return articles.map((article) => ({
     slug: article.slug,
   }));
@@ -42,8 +40,6 @@ export async function generateMetadata({ params }) {
 
 export default async function ArticlePage({ params }) {
   const article = await getArticleBySlug((await params).slug);
-  const tags = await getTagsWithCount();
-  const articles = await getAllArticles();
 
   return (
     <div className="article">

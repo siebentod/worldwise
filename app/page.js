@@ -1,4 +1,3 @@
-import { getAllArticles, getTagsWithCount } from '@/lib/articles';
 import ArticleList from '@/components/ArticleList';
 import Search from '@/components/Search';
 import TagCloud from '@/components/TagCloud';
@@ -6,9 +5,10 @@ import { hyphenToSpace } from '@/lib/space-and-hyphen';
 import './home.css';
 import { convert } from 'html-to-text';
 
+import articles from '@/lib/generated/articles.json';
+import tags from '@/lib/generated/tags-with-count.json';
+
 export default async function Home({ searchParams: searchParamsPromise }) {
-  const articles = await getAllArticles();
-  const tags = await getTagsWithCount();
   const searchParams = await searchParamsPromise;
   const selectedTags = searchParams.tags
     ? searchParams.tags.split(' ').map(hyphenToSpace)
