@@ -62,7 +62,7 @@ export default function ArticleList({
       className={`grid gap-4 ${
         articlesInArticle
           ? 'md:grid-cols-2 xlg:grid-cols-2'
-          : 'sm:grid-cols-2 900px:grid-cols-3 xlg:grid-cols-3'
+          : 'sm:grid-cols-2 xlg:grid-cols-3'
       }`}
     >
       {visibleCards.length > 0 ? (
