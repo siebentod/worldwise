@@ -1,5 +1,5 @@
 export function composePrompt(TITLE, TEXT) {
-  return `Текст статьи: ${TEXT};
+  const prompt = `Текст статьи: ${TEXT};
   
   Напиши 7 тегов для статьи в разделе "Философия" под названием ${TITLE}.
     
@@ -9,4 +9,6 @@ export function composePrompt(TITLE, TEXT) {
   4. Теги только с большой буквы.
   
   Формат ответа: ["Тег1", "Тег2", "Тег3", "Тег4", "Тег5"]`;
+
+  return prompt
 }

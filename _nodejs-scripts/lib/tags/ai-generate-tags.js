@@ -3,7 +3,7 @@ import { vsegpt } from './ai-vsegpt.js';
 import { chatgpt } from './ai-chatgpt.js';
 import { composePrompt } from './compose-prompt.js';
 
-export async function generateTags({ TITLE, TEXT, MODEL = 'sber' }) {
+export async function generateTags({ TITLE, TEXT, MODEL = 'chatgpt' }) {
   const prompt = composePrompt(TITLE, TEXT);
   let tags;
 

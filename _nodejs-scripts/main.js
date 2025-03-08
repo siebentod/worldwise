@@ -8,7 +8,8 @@ import { generateId } from './lib/generate-id.js';
 import { getTitle } from './lib/get-title.js';
 import { getCurrentDate } from './lib/get-current-date.js';
 
-import { generateTags } from './lib/tags/ai-generate-tags.js';
+import { generateTags } from './lib/ai-generate-tags.js';
+import { composePrompt } from './lib/compose-prompt.js';
 
 // PREFERENCES
 
@@ -21,34 +22,30 @@ const MODEL = 'chatgpt'; // sber, vsegpt, chatgpt
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const inputFilePath = path.join(__dirname, 'input.txt');
 
+let content1Initial;
+
 try {
-  const content1Initial = await fs.readFile(inputFilePath, 'utf-8');
+  content1Initial = await fs.readFile(inputFilePath, 'utf-8');
 
   const [content2WithoutTitle, TITLE] = getTitle(content1Initial);
 
   const ID = generateId(TITLE);
 
-  const outputFilePath = path.join(__dirname, `json/${ID}.json`);
+  const outputJSONPath = path.join(__dirname, `json/${ID}.json`);
+  const outputMDPath = path.join(__dirname, `md/${ID}.md`);
 
-  const fileExists = await fs
-    .access(outputFilePath)
-    .then(() => true)
-    .catch(() => false);
+  // const fileExists = await fs
+  //   .access(outputFilePath)
+  //   .then(() => true)
+  //   .catch(() => false);
 
-  if (fileExists) {
-    throw new Error('JSON файл уже существует.');
-  }
+  // if (fileExists) {
+  //   throw new Error('JSON файл уже существует.');
+  // }
 
-  let TAGS = await generateTags({
-    TITLE,
-    TEXT: content2WithoutTitle,
-    MODEL,
-  });
+  const PROMPT = composePrompt(TITLE, content2WithoutTitle)
 
-  if (!TAGS) {
-    console.log('Ошибка при генерации тегов.');
-    TAGS = [];
-  }
+  let TAGS = await generateTags(PROMPT);
 
   const content3Processed = processContent(content2WithoutTitle);
 
@@ -56,17 +53,22 @@ try {
     title: TITLE,
     date: getCurrentDate(),
     content: content3Processed,
-    tags: TAGS,
+    tags: JSON.parse(TAGS),
     theme: THEME,
     id: ID,
   };
 
   await fs.writeFile(
-    outputFilePath,
+    outputJSONPath,
     JSON.stringify(jsonData, null, 2),
     'utf-8'
   );
-  console.log('JSON файл успешно создан:', outputFilePath);
+  await fs.writeFile(
+    outputMDPath,
+    JSON.stringify(content1Initial, null, 2),
+    'utf-8'
+  );
+  console.log('Файлы успешно созданы:', outputMDPath);
 } catch (error) {
   console.error('Ошибка при выполнении скрипта:', error);
 }
